@@ -1,0 +1,62 @@
+version: "3.9"
+services:
+  nginx:
+    build: srcs/nginx
+    restart: "always"
+    ports:
+      - "443:443"
+    networks:
+      - backend
+    volumes:
+      - data:/var/www/html
+    depends_on:
+      - wordpress
+
+  wordpress:
+    build: srcs/wordpress
+    restart: "always"
+    tty: true
+    env_file:
+      - .env
+    environment:
+      - CURRENT_USER=$USER
+    networks:
+      - backend
+      - db
+    volumes:
+      - data:/var/www/html
+    depends_on:
+      - mysql
+    
+
+  mysql:
+    build: srcs/mysql
+    restart: "always"
+    env_file:
+      - .env
+    tty: true
+    networks:
+      - db
+    volumes:
+      - database:/var/lib/mysql
+
+networks:
+  backend:
+    name: backend
+  db:
+    name: db
+
+volumes:
+  data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/data/wordpress
+      o: bind
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/data/db
+      o: bind
+  
