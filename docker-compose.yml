@@ -5,6 +5,7 @@ services:
     restart: "always"
     ports:
       - "443:443"
+      - "8443:8443"
     networks:
       - backend
     volumes:
@@ -15,7 +16,6 @@ services:
   wordpress:
     build: srcs/wordpress
     restart: "always"
-    tty: true
     env_file:
       - .env
     environment:
@@ -34,11 +34,29 @@ services:
     restart: "always"
     env_file:
       - .env
-    tty: true
     networks:
       - db
     volumes:
       - database:/var/lib/mysql
+
+#### BONUS
+  ftp:
+    build: srcs/ftp
+    restart: "always"
+    env_file:
+      - .env
+    tty: true
+    ports:
+      - "21:21"
+    volumes:
+      - data:/var/www/html
+  adminer:
+    build: srcs/adminer
+    restart: "always"
+    networks:
+      - db
+    ports:
+      - "8080:8080"
 
 networks:
   backend:

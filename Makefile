@@ -10,7 +10,7 @@ all: build run
 
 run:
 	$(CC) up -d
-	@echo -i "\n\nINCEPTION IS ONLINE https://localhost"
+	@echo -i "\n\nINCEPTION IS ONLINE https://$${USER}.42.fr"
 
 build:
 	$(EXEC) init

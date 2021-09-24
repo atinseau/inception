@@ -4,7 +4,9 @@
 
 /etc/init.d/mariadb setup &> /dev/null
 
-service mariadb start 2> /dev/null
+/usr/bin/mysqld_safe &
+
+db_pid=$!
 
 until echo "SHOW DATABASES" | mysql -uroot > /dev/null
 do
@@ -17,4 +19,4 @@ echo "CREATE DATABASE $DB_NAME;" | mysql -uroot
 echo "GRANT ALL ON wordpress.* TO '$DB_USER'@'%';" | mysql -uroot
 echo "FLUSH PRIVILEGES;" | mysql -uroot
 
-bash
+wait $db_pid
