@@ -50,6 +50,8 @@ services:
       - "21:21"
     volumes:
       - data:/var/www/html
+    depends_on:
+      - wordpress
   adminer:
     build: srcs/adminer
     restart: "always"
@@ -57,6 +59,8 @@ services:
       - db
     ports:
       - "8080:8080"
+    depends_on:
+      - mysql
 
 networks:
   backend:
