@@ -2,6 +2,8 @@
 
 # INIT MARIA DB
 
+
+
 /etc/init.d/mariadb setup &> /dev/null
 
 /usr/bin/mysqld_safe &

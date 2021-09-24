@@ -1,6 +1,5 @@
 FROM debian:11
 
-
 RUN apt update
 RUN apt install -y nginx
 RUN apt install -y openssl
