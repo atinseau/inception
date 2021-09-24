@@ -2,24 +2,26 @@
 ########     INCEPTION    ############
 ######################################
 
+GREEN=\033[0;32m
+NO=\033[0m
 
 CC=docker-compose -p inception
-EXEC=sudo bash srcs/launcher.sh
+LAUNCHER=./srcs/launcher.sh
 
-all: build run
+all:
+	@$(LAUNCHER) mount 0
+	@sudo $(LAUNCHER) host 1
+	$(CC) up --build -d
+	@printf "$(GREEN)2. Docker-compose done$(NO)\n"
+	@echo "\n\nGo to https://$$USER.42.fr"
 
-run:
-	$(CC) up -d
-	@echo -i "\n\nINCEPTION IS ONLINE https://$${USER}.42.fr"
 
-build:
-	$(EXEC) init
-	$(CC) build
+clean:
+	@$(CC) down > /dev/null
+	@printf "$(GREEN)0. Docker-compose cleaned$(NO)\n"
 
-stop:
-	$(CC) down
-
-clear: stop
-	$(EXEC) clear
-
-re: clear build run
+fclean: clean
+	@$(LAUNCHER) delete 1
+	@sudo $(LAUNCHER) unhost 2
+	
+re: fclean all
