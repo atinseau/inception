@@ -18,7 +18,7 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 RUN php wp-cli.phar --info
 RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
-RUN mkdir --parent /var/www/html
+RUN mkdir -p /var/www/html
 RUN wp core download --locale=fr_FR --allow-root --path="/var/www/html"
 
 COPY www.conf /etc/php/8.0/fpm/pool.d/www.conf

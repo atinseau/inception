@@ -25,3 +25,6 @@ fclean: clean
 	@sudo $(LAUNCHER) unhost 2
 	
 re: fclean all
+
+update:
+	$(launcher) update

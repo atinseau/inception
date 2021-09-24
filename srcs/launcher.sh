@@ -10,55 +10,6 @@ remove_line ()
 	rm /etc/tmp_hosts
 }
 
-# docker --version | grep "20.10.8"
-# if [ $? != 0 ]; then
-# 	if [ "$(uname)" = "Linux" ]; then
-# 		echo "REINSTALL NEW VERSION OF D0OCKER"
-# 		sudo apt-get remove docker docker-engine docker.io containerd runc
-# 		sudo apt-get update
-		
-# 		sudo apt-get install -y \
-# 		apt-transport-https \
-# 		ca-certificates \
-# 		curl \
-# 		gnupg \
-# 		lsb-release
-		
-# 		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-		
-# 		echo \
-# 		"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-# 		$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-	
-# 		# INSTALLING
-# 		sudo apt-get update 
-# 		sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-# 		echo "DOCKER is updated"
-# 	else
-# 		echo "YOU ARE NOT ON LINUX, UPDATE DOCKER DESKTOP !"
-# 	fi
-
-# fi;
-
-
-# docker-compose --version | grep "1.29.2"
-# if [ $? != 0 ]; then
-# 	if [ "$(uname)" = "Linux" ]; then
-# 		sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-# 		sudo chmod +x /usr/local/bin/docker-compose
-# 		sudo rm -rf /usr/bin/docker-compose
-# 		sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-
-
-# 		docker-compose --version
-# 		if [ $? = 0 ]; then
-# 			echo "DOCKER-COMPOSE is updated"
-# 		else
-# 			echo "Somethings wrong with the previous docker-compose installation..."
-# 			exit 1
-# 		fi;
-# 	fi;
-# fi
 
 
 if [ $1 != "" ]; then
@@ -73,8 +24,11 @@ if [ $1 != "" ]; then
 
 	if [ "$1" = "mount" ]; then
 		mkdir ${HOME}/data &> /dev/null
-		mkdir --parent ${HOME}/data/wp &> /dev/null
-		mkdir --parent ${HOME}/data/db &> /dev/null
+		mkdir ${HOME}/data/wp &> /dev/null
+		mkdir ${HOME}/data/db &> /dev/null
+
+		touch ${HOME}/data/wp/fix
+		touch ${HOME}/data/db/fix
 
 		printf "${GREEN}${2}. Volumes is mount at ${HOME}/data${NO}\n"
 	fi;
@@ -87,6 +41,57 @@ if [ $1 != "" ]; then
 	if [ "$1" = "unhost" ]; then
 		remove_line "127.0.0.1		${SUDO_USER}.42.fr"
 		printf "${GREEN}${2}. Hosts is cleared${NO}\n"
+	fi;
+
+
+	if [ "$1" = "update" ]; then
+
+		docker --version | grep "20.10.8"
+		if [ $? != 0 ]; then
+			if [ "$(uname)" = "Linux" ]; then
+				echo "REINSTALL NEW VERSION OF D0OCKER"
+				sudo apt-get remove docker docker-engine docker.io containerd runc
+				sudo apt-get update
+				
+				sudo apt-get install -y \
+				apt-transport-https \
+				ca-certificates \
+				curl \
+				gnupg \
+				lsb-release
+				
+				curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+				
+				echo \
+				"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+				$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+			
+				# INSTALLING
+				sudo apt-get update 
+				sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+				echo "DOCKER is updated"
+			else
+				echo "YOU ARE NOT ON LINUX, UPDATE DOCKER DESKTOP !"
+			fi
+		fi;
+
+		docker-compose --version | grep "1.29.2"
+		if [ $? != 0 ]; then
+			if [ "$(uname)" = "Linux" ]; then
+				sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+				sudo chmod +x /usr/local/bin/docker-compose
+				sudo rm -rf /usr/bin/docker-compose
+				sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+				docker-compose --version
+				if [ $? = 0 ]; then
+					echo "DOCKER-COMPOSE is updated"
+				else
+					echo "Somethings wrong with the previous docker-compose installation..."
+					exit 1
+				fi;
+			fi;
+		fi
 	fi;
 fi;
 
