@@ -27,19 +27,8 @@ if [ $1 != "" ]; then
 
 	if [ "$1" = "mount" ]; then
 
-		VOLUME_PATH="${HOME}/data"
-		if [ "$(uname)" = "Darwin" ]; then
-			mkdir -p data/wp &> /dev/null
-			mkdir -p data/db &> /dev/null
-			VOLUME_PATH="${PWD}/data"
-		else
-			mkdir -p ${HOME}/data/wp &> /dev/null
-			mkdir -p ${HOME}/data/db &> /dev/null
-		fi
-
-		sleep 5
-		docker volume create --name wp --opt type=none --opt device=${VOLUME_PATH}/wp --opt o=bind &> /dev/null
-		docker volume create --name db --opt type=none --opt device=${VOLUME_PATH}/db --opt o=bind &> /dev/null
+		mkdir -p ${HOME}/data/wp &> /dev/null
+		mkdir -p ${HOME}/data/db &> /dev/null
 
 		printf "${GREEN}${2}. Volumes is mount at ${HOME}/data${NO}\n"
 	fi;
