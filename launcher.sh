@@ -10,23 +10,34 @@ remove_line ()
 	rm /etc/tmp_hosts
 }
 
-
-
 if [ $1 != "" ]; then
 
 	if [ "$1" = "delete" ]; then
-		docker volume rm inception_data &> /dev/null
-		docker volume rm inception_database &> /dev/null
-		sudo rm -rf ${HOME}/data
 
+		docker volume remove wp
+		docker volume remove db
+		VOLUME_PATH="${HOME}/data"
+		if [ "$(uname)" = "Darwin" ]; then
+			VOLUME_PATH="${PWD}/data"
+		fi;
+		sudo rm -rf $VOLUME_PATH
 		printf "${GREEN}${2}. Inception volume cleaned${NO}\n"
 	fi;
 
 	if [ "$1" = "mount" ]; then
-		mkdir ${HOME}/data &> /dev/null
-		mkdir ${HOME}/data/wp &> /dev/null
-		mkdir ${HOME}/data/db &> /dev/null
 
+		VOLUME_PATH="${HOME}/data"
+		if [ "$(uname)" = "Darwin" ]; then
+			mkdir -p data/wp &> /dev/null
+			mkdir -p data/db &> /dev/null
+			VOLUME_PATH="${PWD}/data"
+		else
+			mkdir -p ${HOME}/data/wp &> /dev/null
+			mkdir -p ${HOME}/data/db &> /dev/null
+		fi
+
+		docker volume create --name wp --opt type=none --opt device=${VOLUME_PATH}/wp --opt o=bind &> /dev/null
+		docker volume create --name db --opt type=none --opt device=${VOLUME_PATH}/db --opt o=bind &> /dev/null
 
 		printf "${GREEN}${2}. Volumes is mount at ${HOME}/data${NO}\n"
 	fi;
