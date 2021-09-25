@@ -11,7 +11,8 @@ LAUNCHER=./launcher.sh
 all:
 	@$(LAUNCHER) mount 0
 	@sudo $(LAUNCHER) host 1
-	@$(CC) up --build -d
+	@$(CC) build
+	@$(CC) up -d
 	@printf "$(GREEN)2. Docker-compose done$(NO)\n"
 	@echo "\n\nGo to https://$$USER.42.fr"
 
@@ -25,7 +26,9 @@ fclean:
 	@$(LAUNCHER) delete 1
 	@sudo $(LAUNCHER) unhost 2
 	
-re: fclean all
+re:
+	@make fclean
+	@make
 
 update:
 	$(launcher) update

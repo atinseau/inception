@@ -21,6 +21,7 @@ if [ $1 != "" ]; then
 			VOLUME_PATH="${PWD}/data"
 		fi;
 		sudo rm -rf $VOLUME_PATH
+		sleep 5
 		printf "${GREEN}${2}. Inception volume cleaned${NO}\n"
 	fi;
 
@@ -36,6 +37,7 @@ if [ $1 != "" ]; then
 			mkdir -p ${HOME}/data/db &> /dev/null
 		fi
 
+		sleep 5
 		docker volume create --name wp --opt type=none --opt device=${VOLUME_PATH}/wp --opt o=bind &> /dev/null
 		docker volume create --name db --opt type=none --opt device=${VOLUME_PATH}/db --opt o=bind &> /dev/null
 

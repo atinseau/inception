@@ -1,18 +1,28 @@
 version: "3.9"
 
+
+
 networks:
   backend:
     name: backend
   database:
     name: database
 
+
+
 volumes:
   wp:
-    external: true
-    name: wp
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/data/wp
+      o: bind
   db:
-    external: true
-    name: db
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/data/db
+      o: bind
   
 
 services:
