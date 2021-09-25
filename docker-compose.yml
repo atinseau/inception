@@ -1,4 +1,30 @@
 version: "3.9"
+
+
+
+networks:
+  backend:
+    name: backend
+  database:
+    name: database
+
+
+
+volumes:
+  wp:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/data/wp
+      o: bind
+  db:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/data/db
+      o: bind
+  
+
 services:
   nginx:
     build: srcs/nginx
@@ -9,7 +35,7 @@ services:
     networks:
       - backend
     volumes:
-      - data:/var/www/html
+      - wp:/var/www/html
     depends_on:
       - wordpress
 
@@ -22,9 +48,9 @@ services:
       - CURRENT_USER=$USER
     networks:
       - backend
-      - db
+      - database
     volumes:
-      - data:/var/www/html
+      - wp:/var/www/html
     depends_on:
       - mysql
     
@@ -35,9 +61,9 @@ services:
     env_file:
       - .env
     networks:
-      - db
+      - database
     volumes:
-      - database:/var/lib/mysql
+      - db:/var/lib/mysql
 
 #### BONUS
   ftp:
@@ -49,36 +75,15 @@ services:
     ports:
       - "21:21"
     volumes:
-      - data:/var/www/html
+      - wp:/var/www/html
     depends_on:
       - wordpress
   adminer:
     build: srcs/adminer
     restart: "always"
     networks:
-      - db
+      - database
     ports:
       - "8080:8080"
     depends_on:
       - mysql
-
-networks:
-  backend:
-    name: backend
-  db:
-    name: db
-
-volumes:
-  data:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${HOME}/data/wp
-      o: bind
-  database:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${HOME}/data/db
-      o: bind
-  
