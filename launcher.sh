@@ -13,14 +13,7 @@ remove_line ()
 if [ $1 != "" ]; then
 
 	if [ "$1" = "delete" ]; then
-
-		docker volume remove wp
-		docker volume remove db
-		VOLUME_PATH="${HOME}/data"
-		if [ "$(uname)" = "Darwin" ]; then
-			VOLUME_PATH="${PWD}/data"
-		fi;
-		sudo rm -rf $VOLUME_PATH
+		sudo rm -rf ${HOME}/data
 		sleep 5
 		printf "${GREEN}${2}. Inception volume cleaned${NO}\n"
 	fi;

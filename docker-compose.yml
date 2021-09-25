@@ -15,15 +15,14 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ${HOME}/data/wp
       o: bind
+      device: ${HOME}/data/wp
   db:
     driver: local
     driver_opts:
       type: none
-      device: ${HOME}/data/db
       o: bind
-  
+      device: ${HOME}/data/db
 
 services:
 
