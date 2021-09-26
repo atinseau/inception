@@ -31,4 +31,4 @@ re:
 	@make
 
 update:
-	$(launcher) update
+	$(LAUNCHER) update
