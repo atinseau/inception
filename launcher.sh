@@ -22,6 +22,7 @@ if [ $1 != "" ]; then
 
 		mkdir -p ${HOME}/data/wp &> /dev/null
 		mkdir -p ${HOME}/data/db &> /dev/null
+		mkdir -p ${HOME}/data/rdb &> /dev/null
 
 		printf "${GREEN}${2}. Volumes is mount at ${HOME}/data${NO}\n"
 	fi;

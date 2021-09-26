@@ -1,4 +1,4 @@
-FROM debian:11
+FROM debian:buster
 
 EXPOSE 21
 

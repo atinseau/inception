@@ -1,13 +1,14 @@
 version: "3.9"
 
 
-
 networks:
   backend:
     name: backend
   database:
     name: database
-
+  # BONUS
+  cache:
+    name: cache
 
 
 volumes:
@@ -23,6 +24,13 @@ volumes:
       type: none
       o: bind
       device: ${HOME}/data/db
+  # BONUS
+  rdb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/data/rdb
 
 services:
 
@@ -49,10 +57,12 @@ services:
     networks:
       - backend
       - database
+      - cache
     volumes:
       - wp:/var/www/html
     depends_on:
       - mysql
+      - redis
 
   mysql:
     build: srcs/mysql
@@ -86,3 +96,10 @@ services:
       - "8080:8080"
     depends_on:
       - mysql
+  redis:
+    build: srcs/redis
+    restart: "always"
+    networks:
+      - cache
+    volumes:
+      - rdb:/var/redis/dump

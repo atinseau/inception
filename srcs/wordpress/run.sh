@@ -27,6 +27,8 @@ if [ $? != 0 ]; then
 		--allow-root
 
 	wp config --path="/var/www/html" --allow-root set FS_METHOD direct
+	wp config --path="/var/www/html" --allow-root set WP_REDIS_HOST redis
+	wp config --path="/var/www/html" --allow-root set WP_CACHE_KEY_SALT wp-docker-5DknvYepdjyJMo8gDqrLhrpAJUQ
 
 	# BONUS
 	wp --path="/var/www/html" plugin install redis-cache --allow-root
@@ -35,7 +37,5 @@ if [ $? != 0 ]; then
 fi;
 
 
-
-
-service php8.0-fpm start
-/usr/bin/redis-server
+mkdir /run/php
+php-fpm8.0 -F
