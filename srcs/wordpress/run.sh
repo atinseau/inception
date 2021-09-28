@@ -20,7 +20,7 @@ if [ $? != 0 ]; then
 		--allow-root
 
 	wp user create ${WP_USER} ${WP_USER_EMAIL} \
-		--role="editor" \
+		--role="${WP_ROLE}" \
 		--user_pass="${WP_USER_PASSWORD}" \
 		--display_name="${USER}" \
 		--path="/var/www/html" \

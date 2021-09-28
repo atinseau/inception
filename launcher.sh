@@ -86,6 +86,12 @@ if [ $1 != "" ]; then
 				fi;
 			fi;
 		fi
+
+		if [ "$(uname)" = "Linux" ]; then
+			sudo groupadd docker
+			sudo usermod -aG docker $USER
+			newgrp docker 
+		fi;
 	fi;
 fi;
 
